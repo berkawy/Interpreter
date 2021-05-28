@@ -2,13 +2,10 @@ import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Hashtable;
-import java.util.Queue;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class OSApp {
-    static Hashtable<String, String> variables = new Hashtable<>();
+    static HashMap<String, String> variables = new HashMap<>();
     public static Stack readDataFromFileOnDisk(String name) {
         boolean flag = true;
         String path = "src/resources/" + name + ".txt";
@@ -43,7 +40,7 @@ public class OSApp {
         variables.put(name, value);
     }
 
-    public static void readFile(String file)   {
+    public static void readFile(String file) throws IOException {
         Stack s = readDataFromFileOnDisk(file);
         String newFile="";
         while(!s.isEmpty()){
@@ -78,12 +75,11 @@ public class OSApp {
         }
         else if(s.peek().equals("writeFile")){
             s.pop();
-            String name = (String) s.pop();
-            String data = variables.get(s.pop());
+            writeDataToFileOnDisk(variables.get(s.pop()), variables.get(s.pop()));
         }
        }
     }
-    public static void writeFile(String name, String data) throws IOException {
+    public static void writeDataToFileOnDisk(String name, String data) throws IOException {
         try{
         FileWriter file = new FileWriter("src/resources/" + name + ".txt");
         file.write(data);
@@ -94,7 +90,7 @@ public class OSApp {
     }
 
     public static void main(String[] args) throws IOException {
-     //   readFile("Program 1");
-        writeFile("Berkawy 2", "assign 2 3 print x y");
+        readFile("Program 1");
+       // writeDataToFileOnDisk("Berkawy 2", "assign 2 3 print x y");
     }
 }
