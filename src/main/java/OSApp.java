@@ -36,6 +36,21 @@ public class OSApp {
 
         return null;
     }
+
+    public static String readLineByLine(String name) throws IOException {
+        String path = "src/resources/" + name + ".txt";
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = "";
+        while ((line = reader.readLine()) != null){
+            stringBuilder.append(line);
+            stringBuilder.append("\n");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        reader.close();
+        return stringBuilder.toString();
+    }
+
     public static void assign(String name, String value){
         variables.put(name, value);
     }
@@ -50,10 +65,10 @@ public class OSApp {
             if(s.peek().equals("readFile")){
                 s.pop();
                 String var = (String) s.pop();
-               Stack x = readDataFromFileOnDisk(variables.get(var));
-               while(!x.isEmpty()){
+                newFile = readLineByLine(variables.get(var));
+                /*while(!x.isEmpty()){
                    newFile += x.pop() + " ";
-               }
+               }*/
                assign(name, newFile);
             }
             else if(s.peek().equals("input"))
