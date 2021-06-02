@@ -72,7 +72,7 @@ public class OSApp {
                 count++;
                 s.pop();
                 if(flag){
-                    System.out.println("Please enter file name:");
+                    System.out.println("Please enter file name or a number:");
                 }
                 Scanner sc = new Scanner (System.in);
                 String value = sc.nextLine();
@@ -97,10 +97,11 @@ public class OSApp {
         else if(s.peek().equals("add")){
             count++;
             s.pop();
+            String value = (String) variables.keySet().toArray()[0];
             String a = variables.get(s.pop());
             String b = variables.get(s.pop());
             int add = Integer.parseInt(a) + Integer.parseInt(b);
-            variables.replace("a", Integer.toString(add));
+            variables.replace(value, Integer.toString(add));
         }
        }
     }
