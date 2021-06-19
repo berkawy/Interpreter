@@ -190,58 +190,10 @@ public class OSApp {
                     }else{
                         ((PCB)(Memory[i])).currentStatus =State.NotRunning;
                     }
+                    ((PCB)(Memory[i])).PC++;
                 }
             }
         }
-      /*  while(!s.isEmpty()){
-        if(s.peek().equals("assign")){
-            if(count == 0){
-                flag = true;
-            }
-            s.pop();
-            String name = (String) s.pop();
-            if(s.peek().equals("readFile")){
-                s.pop();
-                String var = (String) s.pop();
-                newFile = readLineByLine(variables.get(var));
-                assign(name, newFile);
-            }
-            else if(s.peek().equals("input"))
-            {
-                count++;
-                s.pop();
-                if(flag){
-                    System.out.println("Please enter file name:");
-                }
-                Scanner sc = new Scanner (System.in);
-                String value = sc.nextLine();
-                assign(name, value);
-            }
-        }
-        else if(s.peek().equals("print")){
-            count++;
-            s.pop();
-            if(variables.containsKey(s.peek())){
-                System.out.println(variables.get(s.pop()));
-            }
-            else{
-                System.out.println(s.pop());
-            }
-        }
-        else if(s.peek().equals("writeFile")){
-            count++;
-            s.pop();
-            writeDataToFileOnDisk(variables.get(s.pop()), variables.get(s.pop()));
-        }
-        else if(s.peek().equals("add")){
-            count++;
-            s.pop();
-            String a = variables.get(s.pop());
-            String b = variables.get(s.pop());
-            int add = Integer.parseInt(a) + Integer.parseInt(b);
-            variables.replace("a", Integer.toString(add));
-        }
-       }*/
     }
 
     public static void writeDataToFileOnDisk(String name, String data) throws IOException {
@@ -278,8 +230,6 @@ public class OSApp {
     }
 
     public static void main(String[] args) throws IOException {
-
         readFile();
-
     }
 }

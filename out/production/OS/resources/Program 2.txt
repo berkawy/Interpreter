@@ -1,5 +1,1 @@
-print Enter_file_name
-assign a input
-print Enter_file_data
-assign b input
-writeFile a b
+Program 2222 
