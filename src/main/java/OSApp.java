@@ -74,7 +74,7 @@ public class OSApp {
         int count = 0;
         boolean flag = false;
         while(process !=0) {
-            for (int i = 0; i < Memory.length ; i = i + 50) {
+            for (int i = 0; i < start ; i = i + 50) {
                 if (Memory[i] == null) {
                     continue;
                 }
@@ -106,6 +106,7 @@ public class OSApp {
                             s.pop();
                             if(flag){
                                 System.out.println("Please enter file name:");
+                                flag = false;
                             }
                             Scanner sc = new Scanner (System.in);
                             String value = sc.nextLine();
