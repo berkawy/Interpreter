@@ -49,8 +49,8 @@ public class OSApp {
         return stringBuilder.toString();
     }
 
-    public static void assign(Object current, String name, Object value){
-        for (int start1 = ((PCB) current).start; start1 < ((PCB) current).end; start1++)
+    public static void assign(Object end,Object start, String name, Object value){
+        for (int start1 = (int)start; start1 < (int)end; start1++)
             if(Memory[start1]==null) {
                 Memory[start1] = new Var(name, value);
                 break;
@@ -59,10 +59,14 @@ public class OSApp {
 
     public static void allocateMemory(final File folder) {
         for (final File fileEntry : folder.listFiles()) {
-            Memory[start]= new PCB(id++,State.NotRunning,1,start,start+49);
+            Memory[start++] = id++;
+            Memory[start++] = State.NotRunning;
+            Memory[start++] = 1;
+            Memory[start++] = start -3;
+            Memory[start] = start-4+49;
             Stack s = readDataFromFileOnDisk(fileEntry.getName());
             Memory[start+1] = s;
-            start = start +50;
+            start = start +46 ;
             process++;
             }
         }
@@ -75,12 +79,13 @@ public class OSApp {
         boolean flag = false;
         while(process !=0) {
             for (int i = 0; i < start ; i = i + 50) {
+                count = 0;
                 if (Memory[i] == null) {
                     continue;
                 }
-                for(int j = 0 ; j<2&&!(((Stack) Memory[i+1]).isEmpty());j++){
-                    ((PCB)(Memory[i])).currentStatus =State.Running;
-                    Stack s = (Stack) Memory[i+1];
+                for(int j = 0 ; j<2&&!(((Stack) Memory[i+5]).isEmpty());j++){
+                    (Memory[i+1])=State.Running;
+                    Stack s = (Stack) Memory[i+5];
                     if(s.peek().equals("assign")){
                         if(count == 0){
                             flag = true;
@@ -90,7 +95,7 @@ public class OSApp {
                         if(s.peek().equals("readFile")){
                             s.pop();
                             String var = (String) s.pop();
-                            for(int k = i+2;k<i+49;k++){
+                            for(int k = i+6;k<i+49;k++){
                                 if(Memory[k] != null) {
                                     if (((Var) Memory[k]).name.equals(var)) {
                                         newFile = readLineByLine((String) ((Var) Memory[k]).value);
@@ -98,7 +103,7 @@ public class OSApp {
                                     }
                                 }
                             }
-                            assign(Memory[i],name, newFile);
+                            assign(Memory[i+4],Memory[i+3],name, newFile);
                         }
                         else if(s.peek().equals("input"))
                         {
@@ -110,14 +115,14 @@ public class OSApp {
                             }
                             Scanner sc = new Scanner (System.in);
                             String value = sc.nextLine();
-                            assign(Memory[i],name,value);
+                            assign(Memory[i+4],Memory[i+3],name, value);
                         }
                     }
                     else if(s.peek().equals("print")){
                         count++;
                         s.pop();
                         boolean flag1 =false;
-                        for(int k = i+2;k<i+49;k++) {
+                        for(int k = i+6;k<i+49;k++) {
                             if(Memory[k] != null) {
                                 if (((Var) Memory[k]).name.equals(s.peek())) {
                                     System.out.println(((Var) Memory[k]).value);
@@ -136,7 +141,7 @@ public class OSApp {
                         s.pop();
                         Object value1 = null;
                         Object value2 = null;
-                        for(int k = i+2;k<i+49;k++) {
+                        for(int k = i+6;k<i+49;k++) {
                             if(Memory[k] != null) {
                                 if (((Var) Memory[k]).name.equals(s.peek())) {
                                     value1 = ((Var) Memory[k]).value;
@@ -145,7 +150,7 @@ public class OSApp {
                                 }
                             }
                         }
-                        for(int k = i+2;k<i+49;k++) {
+                        for(int k = i+6;k<i+49;k++) {
                             if(Memory[k] != null) {
                                 if (((Var) Memory[k]).name.equals(s.peek())) {
                                     value2 = ((Var) Memory[k]).value;
@@ -161,8 +166,8 @@ public class OSApp {
                         s.pop();
                         String a = "";
                         String b = "";
-                        int index = i+2;
-                        for(int k = i+2;k<i+49;k++) {
+                        int index = i+6;
+                        for(int k = i+6;k<i+49;k++) {
                             if(Memory[k] != null) {
                                 if (((Var) Memory[k]).name.equals(s.peek())) {
                                     a = (String) ((Var) Memory[k]).value;
@@ -172,7 +177,7 @@ public class OSApp {
                                 }
                             }
                         }
-                        for(int k = i+2;k<i+49;k++) {
+                        for(int k = i+6;k<i+49;k++) {
                             if(Memory[k] != null) {
                                 if (((Var) Memory[k]).name.equals(s.peek())) {
                                     b = (String) ((Var) Memory[k]).value;
@@ -186,12 +191,12 @@ public class OSApp {
                         ((Var)(Memory[index])).value =Integer.toString(add);
                     }
                     if(s.isEmpty()){
-                        ((PCB)(Memory[i])).currentStatus =State.Ended;
+                        Memory[i+1] =State.Ended;
                         process--;
                     }else{
-                        ((PCB)(Memory[i])).currentStatus =State.NotRunning;
+                        Memory[i+1]=State.NotRunning;
                     }
-                    ((PCB)(Memory[i])).PC++;
+                    Memory[i+3] = (int)Memory[i+3] +1;
                 }
             }
         }
